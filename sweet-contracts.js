@@ -57,7 +57,7 @@ macro vbl {
 	function ($args) { 
     	    return C.check(
 		function ($result) 
-	            $check, 'foobar')
+	            $check, 'placeholder for dependent functions')
 	}
     }
     case $comb => {
@@ -89,10 +89,10 @@ macro def {
 }
 
 macro fun {
-    case ($type (,) ...) -> $ret_type var $handle:ident = function $args $body => {
+    case ($type (,) ...) -> $ret_type var $handle:ident = $value:expr => {
 	var $handle = C.guard(
 	    C.fun([(vbl $type) (,) ...], vbl $ret_type),
-	    function $args $body);
+	    $value);
     }
     case ($type (,) ...) -> $ret_type function $handle $args $body => {
 	var $handle = C.guard(
@@ -100,10 +100,10 @@ macro fun {
 	    function $args $body);
     }
     // ctor
-    case ($type (,) ...) ==> $ret_type var $handle:ident = function $args $body => {
+    case ($type (,) ...) ==> $ret_type var $handle:ident = $value:expr => {
 	var $handle = C.guard(
 	    C.fun([(vbl $type) (,) ...], vbl $ret_type, {newOnly: true}),
-	    function $args $body);
+	    $value);
     }
     case ($type (,) ...) ==> $ret_type function $handle $args $body => {
 	var $handle = C.guard(
@@ -111,10 +111,10 @@ macro fun {
 	    function $args $body);
     }
     // no ctor
-    case ($type (,) ...) --> $ret_type var $handle:ident = function $args $body => {
+    case ($type (,) ...) --> $ret_type var $handle:ident = $value:expr => {
 	var $handle = C.guard(
 	    C.fun([(vbl $type) (,) ...], vbl $ret_type, {callOnly: true}),
-	    function $args $body);
+	    $value);
     }
     case ($type (,) ...) --> $ret_type function $handle $args $body => {
 	var $handle = C.guard(
@@ -129,5 +129,5 @@ macro obj {
     }
 }
 
-// var contracts = window['contracts-js'];
+// var contracts = window['contracts-js']
 // setupContracts(contracts)
