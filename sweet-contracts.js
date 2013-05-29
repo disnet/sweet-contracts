@@ -4,6 +4,8 @@ macro setupContracts {
     }
 }
 
+
+// TODO: remove 'bang', replace with check(stuff) so it looks like regular old JS
 macro bang {
     case function ($arg:ident) { $check ... }, $name:lit => {
 	C.check(function ($arg) { $check ... }, $name)
