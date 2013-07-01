@@ -73,4 +73,13 @@ describe("basic functions", function() {
 	expect(opt(3)).to.be(3);
 	expect(opt(6, '3')).to.be(3);
     });
+
+    it("should support zero-length arguments", function() {
+        fun () -> Num
+        function foo() {
+            return 42;
+        }
+
+        expect(foo()).to.be(42);
+    });
 });
