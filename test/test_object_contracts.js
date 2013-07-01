@@ -15,14 +15,14 @@ describe("functions with objects", function() {
 	  y: {foo: (Str) -> {bar: Str}},
 	  z: ?Num}, Str) -> (Num or ((Str) -> {bar: Str}))
     function baz(o,r) {
-	var t = o[r];
-	if (typeof(t) === 'object'){
-	    return o[r].foo;
-	} else if (typeof(t) === 'undefined') {
-	    return 23;
-	} else {
-	    return o[r];
-	}
+	    var t = o[r];
+	    if (typeof(t) === 'object'){
+	        return o[r].foo;
+	    } else if (typeof(t) === 'undefined') {
+	        return 23;
+	    } else {
+	        return o[r];
+	    }
     }
     
     var obj1 = {x: 'foo', y: {foo: function(z) { return {bar: z}; }}, z: 3};
@@ -31,18 +31,18 @@ describe("functions with objects", function() {
     var obj4 = {s: 'foo', z: 23};
     
     it("should handle object contracts as args and return vals", function() {
-	expect(baz(obj1, 'y')('bar')).to.eql({bar: 'bar'});
+	    expect(baz(obj1, 'y')('bar')).to.eql({bar: 'bar'});
     });
 
     it("should fail when arg/return object contract is violated", function() {
-	expect(function() { 
-	    baz(obj2, 'y') 
-	 }).to.throwException();
-	
-	// missing object property
-	expect(function() { 
-	    baz(obj4, 'y') 
-	}).to.throwException();
+	    expect(function() { 
+	        baz(obj2, 'y') 
+	    }).to.throwException();
+	    
+	    // missing object property
+	    expect(function() { 
+	        baz(obj4, 'y') 
+	    }).to.throwException();
     });
 
    it("should handle optional object properties", function() {
@@ -53,34 +53,35 @@ describe("functions with objects", function() {
 describe("functions with arrays", function() {
     fun ([Str,Num], Bool) -> (Num or Str)
     function sel(a,s) {
-	if (s) {
-	    return a[0];
-	} else {
-	    return a[1];
-	}
+	    if (s) {
+	        return a[0];
+	    } else {
+	        return a[1];
+	    }
     }
+
     it("should pass when the array contract is met", function() {
-	expect(sel(['1',2],true)).to.be('1');
-	//note that the contract only guards the first two elements
-	expect(sel(['1',2,3,true,{a: 'qux'}], false)).to.be(2);
+	    expect(sel(['1',2],true)).to.be('1');
+	    //note that the contract only guards the first two elements
+	    expect(sel(['1',2,3,true,{a: 'qux'}], false)).to.be(2);
     });
 
     it("should fail when the array contract is violated", function() {
-	expect(function(){sel([1,'2'])}).to.throwException();
+	    expect(function(){sel([1,'2'])}).to.throwException();
     });
 
     fun ([Str or Num, Bool ...]) -> (Str or Bool or Num)
     function arry(a, i) {
-	return a[i];
+	    return a[i];
     }
     it("should handle 'arbitrarily many of...' contracts", function() {
-	expect(arry(['foo', true, false, true],3)).to.be(true);
-	expect(arry(['foo', true, false, true],0)).to.be('foo');
-	expect(arry([42, true, false, true],0)).to.be(42);
+	    expect(arry(['foo', true, false, true],3)).to.be(true);
+	    expect(arry(['foo', true, false, true],0)).to.be('foo');
+	    expect(arry([42, true, false, true],0)).to.be(42);
     });
 
     it("should fail when appropriate", function() {
-	expect(function() {arry(['foo', true, false, 'boo'],3)}).to.throwException();
+	    expect(function() {arry(['foo', true, false, 'boo'],3)}).to.throwException();
     });
 });
 
@@ -88,7 +89,7 @@ describe("standalone objects", function() {
     obj {a: Str, b: (Num)->Bool}
     var obj5 = { a: 'foo', 
 		 b: function (x) { return x === 3 ? true : 'foo'; }
-	       };
+    };
 
     it("should be referenced successfully when the contract is met", function() {
     	expect(obj5.a).to.eql('foo');
@@ -96,8 +97,8 @@ describe("standalone objects", function() {
     });
 
     it("should fail when the contract is violated", function() {
-	expect(function() {obj5.a = 23}).to.throwException();
-	expect(function() {obj5.b(4)}).to.throwException();
+	    expect(function() {obj5.a = 23}).to.throwException();
+	    expect(function() {obj5.b(4)}).to.throwException();
     });
 });
 
